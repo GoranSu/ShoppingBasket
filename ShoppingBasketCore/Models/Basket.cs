@@ -29,7 +29,8 @@ namespace ShoppingBasketCore.Models
                 Console.WriteLine($"Product {product.Name} already added, please increase quantity if you wish to purchase multiple items.");
             }
         }
-        public void RemoveItem(BasketItem basketItem) 
+
+        public void RemoveItem(BasketItem basketItem)
         {
             bool exists = Items.Any(i => i.Product.Id == basketItem.Product.Id);
             if (exists)
@@ -37,7 +38,7 @@ namespace ShoppingBasketCore.Models
                 Items.Remove(basketItem);
             }
         }
-        public void ChangeItemQuantity(Product product, int quantity) 
+        public void ChangeItemQuantity(Product product, int quantity)
         {
             var existingItem = Items.FirstOrDefault(i => i.Product.Id == product.Id);
             if (existingItem != null)
@@ -50,10 +51,15 @@ namespace ShoppingBasketCore.Models
                 Console.WriteLine($"Product {product.Name} doesn't exist, please add product to basket.");
             }
         }
-        public void ApplyDiscount() 
+        public void ApplyDiscount()
         {
             // Get all discounts
             List<Discount> discounts = DiscountRepository.GetDiscounts();
+            if (discounts == null || discounts.Count == 0)
+            {
+                return;
+            }
+
             foreach (Discount discount in discounts)
             {
                 // Get source product
